@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outFile": "../app/index.js",
+        "sourceMap": true,
+        "jsx": "react"
+    },
+    "include": [
+        "*.tsx"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
