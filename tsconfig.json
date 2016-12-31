@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "system",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
@@ -8,8 +8,8 @@
         "sourceMap": true,
         "jsx": "react"
     },
-    "include": [
-        "*.tsx"
+    "files": [
+        "typescript/index.tsx"
     ],
     "exclude": [
         "node_modules"
