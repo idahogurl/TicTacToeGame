@@ -13,10 +13,7 @@ body {
   width: 800px;
   height: 560px;
   margin-top: 50px;
-}
-
-#ticTacToeBoard[disabled] {
-  cursor: not-allowed !important;
+  margin: auto;
 }
 
 .gameSpace {
@@ -27,12 +24,21 @@ body {
   color: white;
   font-size: 48pt;
   cursor: inherit;
-}
-#spacesTable {
-  opacity: 0.75;
+  text-align: center;
 }
 
-td:nth-child(3) .gameSpace {
+#gameTable {
+  opacity: 0.75;
+  width: 315px;
+  padding-top: 70px;
+  cursor: pointer;
+}
+
+#gameTable[disabled] {
+  cursor: not-allowed !important;
+}
+
+.gameSpace:nth-child(3) {
   border-right: none;
 }
 
@@ -54,19 +60,15 @@ tr:last-child .gameSpace {
   height: 100px;  
   padding: 10px;
   border-radius: 5px;
+  text-align: center;
   -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.25);
   -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.25);
   box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.25);
+  margin: auto;
 }
 
 a {
   cursor: pointer;  
-}
-
-#ticTacToeBoard {
-  width: 315px;
-  padding-top: 125px;
-  cursor: pointer;
 }
 
 .usersTurn, .computersTurn {
@@ -76,9 +78,7 @@ a {
   color: white;
   text-align: center;
   font-size: 18pt;
-  position: absolute;
-  top: 27px;
-  left:100px;
+  text-transform: capitalize;  
 }
 
 .computersTurn {
