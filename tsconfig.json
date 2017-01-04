@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
-        "module": "system",
-        "noImplicitAny": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "outFile": "../app/index.js",
+        "module": "amd",
+        "noImplicitAny": false,
+        "outFile": "app/index.js",
         "sourceMap": true,
-        "jsx": "react"
+        "jsx": "react",
+        "moduleResolution": "node",
+        "experimentalDecorators": true
     },
-    "files": [
-        "typescript/index.tsx"
+    "include": [
+        "typescript"
     ],
     "exclude": [
         "node_modules"
