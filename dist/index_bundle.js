@@ -146,18 +146,20 @@
 	            debugger;
 	            var spaceSelection = $(e.target).attr("id");
 	            if (!this.game.computer.isPlaying) {
-	                this.game.gameTable.setSpace(spaceSelection, this.game.user.letterSelection);
-	                this.game.user.isWinner = this.game.hasWon(this.game.user);
-	                this.game.ended = this.game.gameTable.isFilled() || this.game.user.isWinner;
-	                if (!this.game.ended) {
-	                    this.game.user.isPlaying = false;
-	                    this.game.computer.isPlaying = true;
-	                    var self_1 = this;
-	                    setTimeout(function () {
-	                        self_1.game.computer.play();
-	                        self_1.game.computer.isWinner = self_1.game.hasWon(self_1.game.computer);
-	                        self_1.game.ended = self_1.game.gameTable.isFilled() || self_1.game.computer.isWinner;
-	                    }, 2000);
+	                var success = this.game.gameTable.setSpace(spaceSelection, this.game.user.letterSelection);
+	                if (success) {
+	                    this.game.user.isWinner = this.game.hasWon(this.game.user);
+	                    this.game.ended = this.game.gameTable.isFilled() || this.game.user.isWinner;
+	                    if (!this.game.ended) {
+	                        this.game.user.isPlaying = false;
+	                        this.game.computer.isPlaying = true;
+	                        var self_1 = this;
+	                        setTimeout(function () {
+	                            self_1.game.computer.play();
+	                            self_1.game.computer.isWinner = self_1.game.hasWon(self_1.game.computer);
+	                            self_1.game.ended = self_1.game.gameTable.isFilled() || self_1.game.computer.isWinner;
+	                        }, 2000);
+	                    }
 	                }
 	            }
 	        };
@@ -322,7 +324,9 @@
 	        GameTable.prototype.setSpace = function (spaceNumber, letter) {
 	            if (this.spaces[spaceNumber] === "") {
 	                this.spaces[spaceNumber] = letter;
+	                return true;
 	            }
+	            return false;
 	        };
 	        GameTable.prototype.isFilled = function () {
 	            var emptySpaces = this.spaces.filter(function (space) {

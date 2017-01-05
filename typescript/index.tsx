@@ -99,22 +99,23 @@ class TicTacToePrompt extends Component {
       debugger;
       let spaceSelection = $(e.target).attr("id");
       if (!this.game.computer.isPlaying) {
-        this.game.gameTable.setSpace(spaceSelection, this.game.user.letterSelection);
-        
-        this.game.user.isWinner = this.game.hasWon(this.game.user);
-        this.game.ended = this.game.gameTable.isFilled() || this.game.user.isWinner;
-        
-        if (!this.game.ended) {
-          this.game.user.isPlaying = false;
-          this.game.computer.isPlaying = true;
-        
-          let self: any = this;
-          setTimeout(function() {
-            self.game.computer.play();
-            self.game.computer.isWinner = self.game.hasWon(self.game.computer);
-            self.game.ended = self.game.gameTable.isFilled() || self.game.computer.isWinner;
-          }, 2000);
-      }
+        let success: boolean = this.game.gameTable.setSpace(spaceSelection, this.game.user.letterSelection);
+        if (success) {
+            this.game.user.isWinner = this.game.hasWon(this.game.user);
+            this.game.ended = this.game.gameTable.isFilled() || this.game.user.isWinner;
+            
+            if (!this.game.ended) {
+              this.game.user.isPlaying = false;
+              this.game.computer.isPlaying = true;
+            
+              let self: any = this;
+              setTimeout(function() {
+                self.game.computer.play();
+                self.game.computer.isWinner = self.game.hasWon(self.game.computer);
+                self.game.ended = self.game.gameTable.isFilled() || self.game.computer.isWinner;
+              }, 2000);
+          }
+        }
     }
   }
 
@@ -286,10 +287,12 @@ class GameTable {
      this.spaces = ["-1","","","","","","","","",""]; //-1 simplifies zero-indexing
  }
 
- setSpace(spaceNumber: number, letter: string) {
+ setSpace(spaceNumber: number, letter: string): boolean {
      if (this.spaces[spaceNumber] === "") {
         this.spaces[spaceNumber] = letter;
+        return true;
      }
+     return false;
  }
 
  isFilled() : boolean {
