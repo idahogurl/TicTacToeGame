@@ -146,7 +146,7 @@ class GameOverNotification extends Component {
       <div className={this.props.className} id="prompt">
         Game Over. {this.props.message}
       <div>
-      <a href="index.html">Play again?</a>
+      <a href="">Play again?</a>
       </div>
       </div>
     );

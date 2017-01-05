@@ -190,7 +190,7 @@
 	                "Game Over. ",
 	                this.props.message,
 	                React.createElement("div", null,
-	                    React.createElement("a", { href: "index.html" }, "Play again?"))));
+	                    React.createElement("a", { href: "" }, "Play again?"))));
 	        };
 	        return GameOverNotification;
 	    }(react_1.Component));
