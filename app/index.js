@@ -14,13 +14,14 @@ define("index", ["require", "exports", "react", "mobx", "mobx-react"], function 
     var $ = require("jQuery");
     var React = require("react");
     var ReactDOM = require("react-dom");
+    var Chance = require("chance");
     var TicTacToeTable = (function (_super) {
         __extends(TicTacToeTable, _super);
         function TicTacToeTable(props) {
             return _super.call(this, props) || this;
         }
         TicTacToeTable.prototype.render = function () {
-            return (React.createElement("table", { id: "gameTable", className: "center-block", disabled: this.props.game.computer.isPlaying ? "disabled" : "" },
+            return (React.createElement("table", { id: "gameTable", className: "center-block", disabled: this.props.game.computer.isPlaying ? true : false },
                 React.createElement("tbody", null,
                     React.createElement(TicTacToeRow, { spaceNumberBegin: "1", gameBoard: this.props.game.gameTable, handleClick: this.props.handleClick }),
                     React.createElement(TicTacToeRow, { spaceNumberBegin: "4", gameBoard: this.props.game.gameTable, handleClick: this.props.handleClick }),
@@ -114,7 +115,7 @@ define("index", ["require", "exports", "react", "mobx", "mobx-react"], function 
             debugger;
             return (React.createElement("div", null,
                 React.createElement(TicTacToePrompt, { handleClick: this.selectLetter.bind(this), className: this.tableDisplay ? "hide" : "show" }),
-                React.createElement(GameOverNotification, { message: this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw", className: this.game.ended ? "show" : "hide" }),
+                React.createElement(GameOverNotification, { message: this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw.", className: this.game.ended ? "show" : "hide" }),
                 React.createElement("div", { id: "chalkboard", className: this.tableDisplay && !this.game.ended ? "show" : "hide" },
                     React.createElement(TurnIndicator, { computer: this.game.computer }),
                     React.createElement(TicTacToeTable, { game: this.game, handleClick: this.spaceSelected.bind(this) }))));
@@ -238,23 +239,18 @@ define("index", ["require", "exports", "react", "mobx", "mobx-react"], function 
             return spaceNumber;
         };
         Computer.prototype.getCornerSpace = function () {
-            var _this = this;
             var spaceNumber = 0;
             var cornerSpaces = [1, 3, 7, 9];
-            var hasEmpty = cornerSpaces.some(function (corner) {
-                spaceNumber = corner;
-                return _this.game.gameTable.spaces[corner] === "";
-            });
-            return hasEmpty ? spaceNumber : -1;
+            var space = new RandomSpace(cornerSpaces, this.game.gameTable.spaces);
+            return space.get();
         };
         Computer.prototype.getEmptySpace = function () {
-            var _this = this;
             var spaceNumber = 0;
-            var hasEmpty = this.game.gameTable.spaces.some(function (space) {
-                spaceNumber++;
-                return _this.game.gameTable.spaces[spaceNumber] === "";
+            var indexes = Array.apply(null, { length: 9 }).map(function (value, index) {
+                return index + 1;
             });
-            return hasEmpty ? spaceNumber : -1;
+            var space = new RandomSpace(indexes, this.game.gameTable.spaces);
+            return space.get();
         };
         return Computer;
     }());
@@ -264,6 +260,45 @@ define("index", ["require", "exports", "react", "mobx", "mobx-react"], function 
     __decorate([
         mobx_1.observable
     ], Computer.prototype, "isPlaying");
+    var RandomSpace = (function () {
+        function RandomSpace(indexRange, spaces) {
+            this.indexRange = indexRange;
+            this.spaces = spaces;
+        }
+        RandomSpace.prototype.get = function () {
+            var emptySpaces = this.getEmptySpaces();
+            var maxIndex = emptySpaces.length - 1;
+            if (maxIndex === -1) {
+                return -1;
+            }
+            else if (maxIndex === 0) {
+                return emptySpaces[0];
+            }
+            else {
+                var found = false;
+                var chance_1 = new Chance();
+                while (!found) {
+                    var randomIndex = chance_1.integer({ min: 0, max: maxIndex });
+                    var spaceNumber = emptySpaces[randomIndex];
+                    if (this.spaces[spaceNumber] === "") {
+                        return spaceNumber;
+                    }
+                }
+            }
+        };
+        RandomSpace.prototype.getEmptySpaces = function () {
+            var _this = this;
+            //get the emptySpaces
+            var emptySpaces = [];
+            this.indexRange.map(function (index) {
+                if (_this.spaces[index] === "") {
+                    emptySpaces.push(index);
+                }
+            });
+            return emptySpaces;
+        };
+        return RandomSpace;
+    }());
     var GameTable = (function () {
         function GameTable() {
             this.spaces = ["-1", "", "", "", "", "", "", "", "", ""]; //-1 simplifies zero-indexing

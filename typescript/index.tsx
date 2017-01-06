@@ -1,21 +1,21 @@
 const $ = require("jQuery");
 const React = require("react");
 const ReactDOM = require("react-dom");
+const Chance = require("chance");
 
 import {Component} from "react";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 
 @observer
-class TicTacToeTable extends Component {
-  props:any;
+class TicTacToeTable extends Component<any,any> {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <table id="gameTable" className="center-block" disabled={this.props.game.computer.isPlaying ? "disabled" : ""}>
+      <table id="gameTable" className="center-block" disabled={this.props.game.computer.isPlaying ? true : false}>
         <tbody>
         <TicTacToeRow spaceNumberBegin="1" gameBoard={this.props.game.gameTable} handleClick={this.props.handleClick}/>
         <TicTacToeRow spaceNumberBegin="4" gameBoard={this.props.game.gameTable} handleClick={this.props.handleClick}/>
@@ -27,9 +27,7 @@ class TicTacToeTable extends Component {
 }
 
 @observer
-class TicTacToeRow extends Component {
-  props: any;
-
+class TicTacToeRow extends Component<any,any> {
   constructor() {
     super();
   }
@@ -48,8 +46,7 @@ class TicTacToeRow extends Component {
   }
 }
 
-class TicTacToeSpace extends Component {
-   props: any;
+class TicTacToeSpace extends Component<any,any> {
    constructor(props) {
         super(props);
     }
@@ -60,8 +57,7 @@ class TicTacToeSpace extends Component {
   }
 }
 
-class TicTacToePrompt extends Component {
-  props: any;
+class TicTacToePrompt extends Component<any,any> {
   constructor(props) {
    super(props);
   }
@@ -75,7 +71,7 @@ class TicTacToePrompt extends Component {
   }
 }
 
-@observer class TicTacToeGame extends Component {
+@observer class TicTacToeGame extends Component<any,any> {
   game: Game;
   @observable tableDisplay: boolean;
   
@@ -123,7 +119,7 @@ class TicTacToePrompt extends Component {
         debugger;
     return (<div>
       <TicTacToePrompt handleClick={this.selectLetter.bind(this)} className={this.tableDisplay ? "hide" : "show"}/>
-      <GameOverNotification message={this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw"} 
+      <GameOverNotification message={this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw."} 
         className={this.game.ended ? "show" : "hide"}/>
       <div id="chalkboard" className={this.tableDisplay && !this.game.ended ? "show" : "hide"}>
         <TurnIndicator computer={this.game.computer}/>
@@ -134,9 +130,7 @@ class TicTacToePrompt extends Component {
 }
 
 @observer
-class GameOverNotification extends Component {
-  props: any;
-
+class GameOverNotification extends Component<any,any> {
   constructor(props) {
     super(props);
   }
@@ -154,8 +148,7 @@ class GameOverNotification extends Component {
 }
 
 @observer
-class TurnIndicator extends Component {
-  props: any;
+class TurnIndicator extends Component<any,any> {
   constructor(props) {
     super(props);
   }
@@ -263,21 +256,60 @@ class Computer implements IPlayer {
     getCornerSpace() : number {
       let spaceNumber:number = 0;
       let cornerSpaces: number[] = [1,3,7,9];
-      let hasEmpty = cornerSpaces.some(corner => {
-        spaceNumber = corner;
-        return this.game.gameTable.spaces[corner] === "";
-      });
-      return hasEmpty ? spaceNumber : -1;
+      
+      let space = new RandomSpace(cornerSpaces, this.game.gameTable.spaces);
+      return space.get();
     }
 
-    getEmptySpace() : number {
+    getEmptySpace(): number {
       let spaceNumber:number = 0;
-      
-      let hasEmpty = this.game.gameTable.spaces.some(space => {
-        spaceNumber++;
-        return this.game.gameTable.spaces[spaceNumber] === "";
+      let indexes:number[] =  Array.apply(null, {length: 9}).map(function(value, index){
+        return index + 1;
       });
-      return hasEmpty ? spaceNumber : -1;
+
+      let space = new RandomSpace(indexes, this.game.gameTable.spaces);
+      return space.get();
+    }
+}
+
+class RandomSpace {
+  indexRange:number[];
+  spaces:string[];
+  constructor(indexRange: number[], spaces:string[]) {
+    this.indexRange = indexRange;
+    this.spaces = spaces;
+  }
+
+  get() {
+    let emptySpaces = this.getEmptySpaces();
+    let maxIndex: number = emptySpaces.length -1;
+    
+    if (maxIndex === -1) {
+      return -1;
+    } else if (maxIndex === 0) {
+      return emptySpaces[0];
+    } else {
+      let found: boolean = false;
+      let chance = new Chance();
+      while (!found) {
+        let randomIndex:number = chance.integer({min: 0, max: maxIndex});
+        let spaceNumber:number = emptySpaces[randomIndex];
+        if (this.spaces[spaceNumber] === "") {
+          return spaceNumber;
+        }
+      }
+    }
+  }
+
+  getEmptySpaces():number[] {
+      //get the emptySpaces
+      let emptySpaces: number[] = [];
+      this.indexRange.map(index => {
+        if (this.spaces[index] === "") {
+          emptySpaces.push(index);
+        }
+      });
+      return emptySpaces;
     }
 }
 
