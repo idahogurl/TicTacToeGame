@@ -98,7 +98,10 @@ define("index", ["require", "exports", "react", "mobx", "mobx-react"], function 
                 if (success) {
                     this.game.user.isWinner = this.game.hasWon(this.game.user);
                     this.game.ended = this.game.gameTable.isFilled() || this.game.user.isWinner;
-                    if (!this.game.ended) {
+                    if (this.game.ended) {
+                        $("#game-over-notification").fadeIn(1000);
+                    }
+                    else {
                         this.game.user.isPlaying = false;
                         this.game.computer.isPlaying = true;
                         var self_1 = this;
@@ -106,6 +109,8 @@ define("index", ["require", "exports", "react", "mobx", "mobx-react"], function 
                             self_1.game.computer.play();
                             self_1.game.computer.isWinner = self_1.game.hasWon(self_1.game.computer);
                             self_1.game.ended = self_1.game.gameTable.isFilled() || self_1.game.computer.isWinner;
+                            if (self_1.game.ended)
+                                $("#game-over-notification").fadeIn(1000);
                         }, 2000);
                     }
                 }
@@ -113,12 +118,18 @@ define("index", ["require", "exports", "react", "mobx", "mobx-react"], function 
         };
         TicTacToeGame.prototype.render = function () {
             debugger;
+            var hideStyle = {
+                display: "none"
+            };
             return (React.createElement("div", null,
                 React.createElement(TicTacToePrompt, { handleClick: this.selectLetter.bind(this), className: this.tableDisplay ? "hide" : "show" }),
-                React.createElement(GameOverNotification, { message: this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw.", className: this.game.ended ? "show" : "hide" }),
-                React.createElement("div", { id: "chalkboard", className: this.tableDisplay && !this.game.ended ? "show" : "hide" },
-                    React.createElement(TurnIndicator, { computer: this.game.computer }),
-                    React.createElement(TicTacToeTable, { game: this.game, handleClick: this.spaceSelected.bind(this) }))));
+                React.createElement("div", { id: "game-over-notification", style: hideStyle },
+                    React.createElement("div", { id: "shadow-overlay" }),
+                    React.createElement(GameOverNotification, { id: "game-over", message: this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw." })),
+                React.createElement("div", { id: "chalkboard-wrapper" },
+                    React.createElement("div", { id: "chalkboard", className: this.tableDisplay ? "show" : "hide" },
+                        React.createElement(TurnIndicator, { computer: this.game.computer }),
+                        React.createElement(TicTacToeTable, { game: this.game, handleClick: this.spaceSelected.bind(this) })))));
         };
         return TicTacToeGame;
     }(react_1.Component));

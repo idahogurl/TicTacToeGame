@@ -100,7 +100,12 @@ class TicTacToePrompt extends Component<any,any> {
             this.game.user.isWinner = this.game.hasWon(this.game.user);
             this.game.ended = this.game.gameTable.isFilled() || this.game.user.isWinner;
             
-            if (!this.game.ended) {
+            if (this.game.ended) 
+            {
+              $("#game-over-notification").fadeIn(1000);
+            }
+            else
+            {
               this.game.user.isPlaying = false;
               this.game.computer.isPlaying = true;
             
@@ -109,6 +114,7 @@ class TicTacToePrompt extends Component<any,any> {
                 self.game.computer.play();
                 self.game.computer.isWinner = self.game.hasWon(self.game.computer);
                 self.game.ended = self.game.gameTable.isFilled() || self.game.computer.isWinner;
+                if (self.game.ended) $("#game-over-notification").fadeIn(1000);
               }, 2000);
           }
         }
@@ -116,16 +122,28 @@ class TicTacToePrompt extends Component<any,any> {
   }
 
   render() {
-        debugger;
+    debugger;
+    
+    const hideStyle = {
+      display: "none"
+    };
+
     return (<div>
       <TicTacToePrompt handleClick={this.selectLetter.bind(this)} className={this.tableDisplay ? "hide" : "show"}/>
-      <GameOverNotification message={this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw."} 
-        className={this.game.ended ? "show" : "hide"}/>
-      <div id="chalkboard" className={this.tableDisplay && !this.game.ended ? "show" : "hide"}>
+      
+      <div id="game-over-notification" style={hideStyle}>
+        <div id="shadow-overlay"></div>
+        <GameOverNotification id="game-over" message={this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw."} />
+      </div>
+      
+      <div id="chalkboard-wrapper">
+      <div id="chalkboard" className={this.tableDisplay ? "show" : "hide"}>
         <TurnIndicator computer={this.game.computer}/>
         <TicTacToeTable game={this.game} handleClick={this.spaceSelected.bind(this)}/>
       </div>
-    </div>);
+      </div>
+      </div>
+    );
   }
 }
 
@@ -137,12 +155,13 @@ class GameOverNotification extends Component<any,any> {
   render() {
     
     return (
-      <div className={this.props.className} id="prompt">
-        Game Over. {this.props.message}
-      <div>
-      <a href="">Play again?</a>
-      </div>
-      </div>
+      
+        <div className={this.props.className} id="prompt">
+          Game Over. {this.props.message}
+        <div>
+        <a href="">Play again?</a>
+        </div>
+        </div>
     );
   }
 }

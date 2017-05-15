@@ -67,7 +67,7 @@
 	    var $ = __webpack_require__(181);
 	    var React = __webpack_require__(2);
 	    var ReactDOM = __webpack_require__(35);
-	    var Chance = __webpack_require__(185);
+	    var Chance = __webpack_require__(182);
 	    var TicTacToeTable = (function (_super) {
 	        __extends(TicTacToeTable, _super);
 	        function TicTacToeTable(props) {
@@ -151,7 +151,10 @@
 	                if (success) {
 	                    this.game.user.isWinner = this.game.hasWon(this.game.user);
 	                    this.game.ended = this.game.gameTable.isFilled() || this.game.user.isWinner;
-	                    if (!this.game.ended) {
+	                    if (this.game.ended) {
+	                        $("#game-over-notification").fadeIn(1000);
+	                    }
+	                    else {
 	                        this.game.user.isPlaying = false;
 	                        this.game.computer.isPlaying = true;
 	                        var self_1 = this;
@@ -159,6 +162,8 @@
 	                            self_1.game.computer.play();
 	                            self_1.game.computer.isWinner = self_1.game.hasWon(self_1.game.computer);
 	                            self_1.game.ended = self_1.game.gameTable.isFilled() || self_1.game.computer.isWinner;
+	                            if (self_1.game.ended)
+	                                $("#game-over-notification").fadeIn(1000);
 	                        }, 2000);
 	                    }
 	                }
@@ -166,12 +171,18 @@
 	        };
 	        TicTacToeGame.prototype.render = function () {
 	            debugger;
+	            var hideStyle = {
+	                display: "none"
+	            };
 	            return (React.createElement("div", null,
 	                React.createElement(TicTacToePrompt, { handleClick: this.selectLetter.bind(this), className: this.tableDisplay ? "hide" : "show" }),
-	                React.createElement(GameOverNotification, { message: this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw.", className: this.game.ended ? "show" : "hide" }),
-	                React.createElement("div", { id: "chalkboard", className: this.tableDisplay && !this.game.ended ? "show" : "hide" },
-	                    React.createElement(TurnIndicator, { computer: this.game.computer }),
-	                    React.createElement(TicTacToeTable, { game: this.game, handleClick: this.spaceSelected.bind(this) }))));
+	                React.createElement("div", { id: "game-over-notification", style: hideStyle },
+	                    React.createElement("div", { id: "shadow-overlay" }),
+	                    React.createElement(GameOverNotification, { id: "game-over", message: this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw." })),
+	                React.createElement("div", { id: "chalkboard-wrapper" },
+	                    React.createElement("div", { id: "chalkboard", className: this.tableDisplay ? "show" : "hide" },
+	                        React.createElement(TurnIndicator, { computer: this.game.computer }),
+	                        React.createElement(TicTacToeTable, { game: this.game, handleClick: this.spaceSelected.bind(this) })))));
 	        };
 	        return TicTacToeGame;
 	    }(react_1.Component));
@@ -35887,10 +35898,7 @@
 
 
 /***/ },
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(Buffer) {//  Chance.js 1.0.4
@@ -40840,10 +40848,10 @@
 	    }
 	})();
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(186).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(183).Buffer))
 
 /***/ },
-/* 186 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -40856,9 +40864,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(187)
-	var ieee754 = __webpack_require__(188)
-	var isArray = __webpack_require__(189)
+	var base64 = __webpack_require__(184)
+	var ieee754 = __webpack_require__(185)
+	var isArray = __webpack_require__(186)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -42639,7 +42647,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 187 */
+/* 184 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -42759,7 +42767,7 @@
 
 
 /***/ },
-/* 188 */
+/* 185 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -42849,7 +42857,7 @@
 
 
 /***/ },
-/* 189 */
+/* 186 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
