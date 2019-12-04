@@ -8,7 +8,7 @@ body {
 }
 
 #chalkboard {
-  background: #ffffff url("../chalkboard.jpg") no-repeat center top;
+  background: #ffffff url("https://dynamicdiner.com/images/game/chalkboard.jpg") no-repeat center top;
   border-radius: 5px;
   -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.25);
   -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.25);

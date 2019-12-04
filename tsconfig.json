@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
-        "module": "amd",
+        "module": "commonjs",
+        "target": "es6",
         "noImplicitAny": false,
-        "outFile": "app/index.js",
-        "sourceMap": true,
+        "sourceMap": false,
         "jsx": "react",
         "moduleResolution": "node",
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "outDir": "app",
+        "allowJs": true,
+        "esModuleInterop": true
     },
     "include": [
         "typescript"

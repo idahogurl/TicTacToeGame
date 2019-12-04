@@ -1,11 +1,8 @@
-const $ = require("jQuery");
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Chance = require("chance");
-
-import {Component} from "react";
+import Chance from "chance";
+import React, { Component } from "react";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
+import { render } from "react-dom";
 
 @observer
 class TicTacToeTable extends Component<any,any> {
@@ -15,7 +12,7 @@ class TicTacToeTable extends Component<any,any> {
 
   render() {
     return (
-      <table id="gameTable" className="center-block" disabled={this.props.game.computer.isPlaying ? true : false}>
+      <table id="gameTable" className="center-block" disabled={this.props.game.computer.isPlaying}>
         <tbody>
         <TicTacToeRow spaceNumberBegin="1" gameBoard={this.props.game.gameTable} handleClick={this.props.handleClick}/>
         <TicTacToeRow spaceNumberBegin="4" gameBoard={this.props.game.gameTable} handleClick={this.props.handleClick}/>
@@ -83,7 +80,7 @@ class TicTacToePrompt extends Component<any,any> {
   }
   
   selectLetter(e) {
-    let user: string = $(e.target).html();
+    let user: string = e.target.innerHTML;
     let computer: string = user === "O" ? "X" : "O";
     this.game.user.letterSelection = user;
     this.game.computer.letterSelection = computer;
@@ -92,8 +89,7 @@ class TicTacToePrompt extends Component<any,any> {
   }
 
   spaceSelected(e) {
-      debugger;
-      let spaceSelection = $(e.target).attr("id");
+      let spaceSelection = e.target.id;
       if (!this.game.computer.isPlaying) {
         let success: boolean = this.game.gameTable.setSpace(spaceSelection, this.game.user.letterSelection);
         if (success) {
@@ -102,7 +98,7 @@ class TicTacToePrompt extends Component<any,any> {
             
             if (this.game.ended) 
             {
-              $("#game-over-notification").fadeIn(1000);
+              document.getElementById('game-over-notification');
             }
             else
             {
@@ -122,16 +118,10 @@ class TicTacToePrompt extends Component<any,any> {
   }
 
   render() {
-    debugger;
-    
-    const hideStyle = {
-      display: "none"
-    };
-
     return (<div>
       <TicTacToePrompt handleClick={this.selectLetter.bind(this)} className={this.tableDisplay ? "hide" : "show"}/>
       
-      <div id="game-over-notification" style={hideStyle}>
+      <div id="game-over-notification" style={{ display: this.game.ended ? 'block' : 'none'}}>
         <div id="shadow-overlay"></div>
         <GameOverNotification id="game-over" message={this.game.user.isWinner ? "You win." : this.game.computer.isWinner ? "Computer wins." : "Draw."} />
       </div>
@@ -389,12 +379,5 @@ class Game {
         });
     }
 }
-//Outcomes
-//Computer wins.
-//You win.
-//Draw.
 
-//Computer's Turn
-//Your Turn
-ReactDOM.render(
-    <TicTacToeGame/>, document.getElementById("gameBoard"));
+render(<TicTacToeGame/>, document.getElementById("gameBoard"));
