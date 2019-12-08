@@ -1,8 +1,8 @@
 {
   "scripts": {
     "clean": "rm -rf docs",
-    "start": "parcel typescript/index.html --out-dir docs",
-    "build-prod": "parcel build typescript/index.html --out-dir docs"
+    "start": "parcel typescript/index.html",
+    "build-prod": "parcel build typescript/index.html"
   },
   "devDependencies": {
     "@types/chance": "^0.7.31",
