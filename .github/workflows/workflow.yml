@@ -1,4 +1,4 @@
-name: DEPLOY
+name: CI
 
 on: [push]
 
@@ -12,6 +12,6 @@ jobs:
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v1.2.5
       with:
-        build_dir: docs
+        build_dir: dist
       env:
         GITHUB_PAT: ${{ secrets.TOKEN }}
