@@ -13,4 +13,5 @@ jobs:
       uses: crazy-max/ghaction-github-pages@v1.2.5
       with:
         build_dir: docs
-        github_pat: 8f76efd93f3ca51cbd44590364ddfca581f674a7
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
