@@ -14,4 +14,4 @@ jobs:
       with:
         build_dir: docs
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        GITHUB_PAT: ${{ secrets.TOKEN }}
