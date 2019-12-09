@@ -77,6 +77,10 @@ class TicTacToePrompt extends Component<any, any> {
 
     this.tableDisplay = false;
     this.game = new Game();
+
+    this.selectLetter = this.selectLetter.bind(this);
+    this.restartGame = this.restartGame.bind(this);
+    this.spaceSelected = this.spaceSelected.bind(this);
   }
 
   selectLetter(e: MouseEvent) {
@@ -116,6 +120,11 @@ class TicTacToePrompt extends Component<any, any> {
     }
   }
 
+  restartGame() {
+    this.game = new Game();
+    this.tableDisplay = false;
+  }
+
   render() {
     let message: string;
     if (this.game.user.isWinner) {
@@ -129,17 +138,17 @@ class TicTacToePrompt extends Component<any, any> {
     const showGameOver = this.game.ended && !this.game.user.isPlaying;
 
     return (<div>
-      <TicTacToePrompt handleClick={this.selectLetter.bind(this)} className={this.tableDisplay ? "hide" : "show"} />
+      <TicTacToePrompt handleClick={this.selectLetter} className={this.tableDisplay ? "hide" : "show"} />
 
       <div id="game-over-notification" className={showGameOver ? "show" : "hide"}>
         <div id="shadow-overlay"></div>
-        <GameOverNotification id="game-over" message={message} />
+        <GameOverNotification id="game-over" message={message} onClick={this.restartGame} />
       </div>
 
       <div id="chalkboard-wrapper">
         <div id="chalkboard" className={this.tableDisplay ? "show" : "hide"}>
           <TurnIndicator computer={this.game.computer} />
-          <TicTacToeTable game={this.game} handleClick={this.spaceSelected.bind(this)} />
+          <TicTacToeTable game={this.game} handleClick={this.spaceSelected} />
         </div>
       </div>
     </div>
@@ -159,7 +168,7 @@ class GameOverNotification extends Component<any, any> {
       <div className={this.props.className} id="prompt">
         Game Over. {this.props.message}
         <div>
-          <a href="">Play again?</a>
+          <a onClick={this.props.onClick}>Play again?</a>
         </div>
       </div>
     );
