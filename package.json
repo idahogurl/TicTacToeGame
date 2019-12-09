@@ -1,8 +1,8 @@
 {
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "parcel typescript/index.html",
-    "build-prod": "parcel build typescript/index.html --public-url ."
+    "start": "yarn clean && parcel typescript/index.html",
+    "build-prod": "yarn clean && parcel build typescript/index.html --public-url ."
   },
   "devDependencies": {
     "@types/chance": "^0.7.31",

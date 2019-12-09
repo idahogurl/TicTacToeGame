@@ -54,6 +54,24 @@ tr:last-child .gameSpace {
   color: blue;
 }
 
+.show {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+  -moz-transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+  -o-transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+  transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+}
+
+.hide {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+  -moz-transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+  -o-transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+  transition: opacity 0.5s 0s ease-in, visibility 0.5s 0s ease-in;
+}
+
 #prompt {
   background-color: white;
   width: 400px;
